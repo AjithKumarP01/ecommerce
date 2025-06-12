@@ -50,7 +50,7 @@ nohup.out
 .dev-time-data/
 
 # Local configuration files
-application*.yml
-application*.properties
+#application*.yml
+#application*.properties
 *.env # For environment variables
 *.secret # For secrets
