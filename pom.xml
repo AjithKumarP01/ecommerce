@@ -45,6 +45,7 @@
     </dependencyManagement>
 
     <modules>
+        <module>eureka-server</module>
     </modules>
 
     <build>
