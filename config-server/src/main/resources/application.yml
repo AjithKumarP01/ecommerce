@@ -1,0 +1,40 @@
+
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          # This is crucial. You need to create a separate GitHub repository
+          # specifically for your microservices' configurations.
+          # Replace 'your-username' with your actual GitHub username.
+          # I recommend naming it something like 'ecommerce-config-repo'.
+          uri: https://github.com/AjithKumarP01/ecommerce-config-repo.git
+          default-label: main # Or 'master' if your repo uses that default branch name
+            # Optional: specify search paths within the config repository.
+            # This can be useful if you organize configs into subfolders per service.
+            # search-paths:
+            #   - 'user-service-configs'
+            #   - 'product-service-configs'
+          # If you don't specify, it will look directly in the root of the repo.
+          # For now, let's assume configs are at the root for simplicity.
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka # Point to your running Eureka server
+    enabled: true # Ensure the Config Server registers with Eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always # Show details in health endpoint
