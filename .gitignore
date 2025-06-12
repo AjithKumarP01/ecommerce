@@ -1,0 +1,56 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Java
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Logs
+*.log
+logs/
+
+# Project specific
+.DS_Store
+.vscode/ # If you ever use VS Code
+.classpath
+.project
+.settings/
+bin/
+
+# OS generated files
+.localized
+.metadata
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# For Spring Boot
+*.jar
+*.war
+*.zip
+*.tar.gz
+nohup.out
+
+# Specific to Spring Boot DevTools
+.dev-time-data/
+
+# Local configuration files
+application*.yml
+application*.properties
+*.env # For environment variables
+*.secret # For secrets
