@@ -41,6 +41,10 @@ spring:
                 name: user-service
                 fallbackUri: forward:/api/fallback/user
         # You'll add routes for Product, Cart, Order, Payment services here as you create them
+        - id: product-service-route #new route for product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/products/** # Routes requests starting with /api/products/ to the product-service
 
     # Resilience4j Configuration
 
