@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: api-gateway
+  main:
+    web-application-type: reactive
 
   cloud:
     gateway:
@@ -41,9 +43,10 @@ spring:
         # You'll add routes for Product, Cart, Order, Payment services here as you create them
 
     # Resilience4j Configuration
-    circuitbreaker:
-      resilience4j:
-        config:
+
+    resilience4j:
+      circuitbreaker:
+        configs:
           default:
             failureRateThreshold: 50 # Percentage of failed calls to trip the circuit
             waitDurationInOpenState: 10s # Time circuit remains open
