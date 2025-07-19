@@ -15,7 +15,7 @@ spring:
           # I recommend naming it something like 'ecommerce-config-repo'.
           uri: https://github.com/AjithKumarP01/ecommerce-config-repo.git #https://github.com/AjithKumarP01/ecommerce-config-repo.git
           username: AjithKumarP01 # Your Git username (e.g., GitHub username)
-          password: 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
+          password: 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
           #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
           default-label: main # Or 'master' if your repo uses that default branch name
             # Optional: specify search paths within the config repository.
