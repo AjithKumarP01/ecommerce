@@ -1,5 +1,9 @@
 
 spring:
+  security:
+    user:
+      name: user
+      password: root
   application:
     name: auth-service
   config:
