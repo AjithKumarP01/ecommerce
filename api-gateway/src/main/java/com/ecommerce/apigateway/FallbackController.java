@@ -1,4 +1,4 @@
-package com.pm.apigateway;
+package com.ecommerce.apigateway;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

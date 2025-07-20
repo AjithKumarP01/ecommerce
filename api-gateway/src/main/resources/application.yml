@@ -45,6 +45,10 @@ spring:
           uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/api/products/** # Routes requests starting with /api/products/ to the product-service
+        - id: category-service-route # You should ideally have a unique ID for each route
+          uri: lb://PRODUCT-SERVICE # Assuming categories are also handled by PRODUCT-SERVICE
+          predicates:
+              - Path=/api/categories/** # This route handles ONLY paths starting with /api/categories/
 
     # Resilience4j Configuration
 
