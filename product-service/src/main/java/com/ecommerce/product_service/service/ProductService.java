@@ -7,6 +7,8 @@ import com.ecommerce.product_service.event.ProductEvent;
 import com.ecommerce.product_service.repository.CategoryRepository;
 import com.ecommerce.product_service.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class ProductService {
 
     private static final String PRODUCT_TOPIC = "product-events";
 
+    @CacheEvict(value = "products", allEntries = true)
     public Product createProduct(ProductRequest request){
 
         Category category = categoryRepository.findById(request.getCategoryId())
@@ -61,14 +64,16 @@ public class ProductService {
         return savedProduct;
     }
 
+    @Cacheable(value = "products")
     public List<Product> getAllProducts(){
         return productRepository.findAll();
     }
-
+    @Cacheable(value = "product", key = "#id")
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
 
+    @CacheEvict(value = {"products", "product"}, key = "#id")
     public Product updateProductStock(Long id, Integer newStock){
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with ID: " + id));
@@ -95,6 +100,7 @@ public class ProductService {
         return updatedProduct;
     }
 
+    @CacheEvict(value = {"products","product"}, key = "#id")
     public void deleteProduct(Long id) {
         if(!productRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,  "Product not found with ID: " + id);
@@ -102,7 +108,9 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+
     // Additional methods for updating other product details can be added here
+    @CacheEvict(value = {"products", "product"}, key = "#id")
     public Product updateProduct(Long id, ProductRequest request) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with ID: " + id));

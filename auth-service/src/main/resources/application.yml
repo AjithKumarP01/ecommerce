@@ -1,13 +1,10 @@
 
 spring:
-  security:
-    user:
-      name: user
-      password: root
   application:
     name: auth-service
   config:
     import: optional:configserver:http://localhost:8888
+
 
 eureka:
   client:
