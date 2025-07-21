@@ -19,6 +19,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable) // Disable CSRF for reactive gateway
                 .authorizeExchange(exchanges -> exchanges
                         // Permit all requests to Product Service and Category Service paths
+                        .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers("/api/products/**").permitAll()
                         .pathMatchers("/api/categories/**").permitAll()
                         // If Auth Service login/registration endpoints should also be public via gateway:

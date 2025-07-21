@@ -41,11 +41,11 @@ spring:
                 name: user-service
                 fallbackUri: forward:/api/fallback/user
         # You'll add routes for Product, Cart, Order, Payment services here as you create them
-        - id: product-service-route #new route for product-service
+        - id: product-service #new route for product-service
           uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/api/products/** # Routes requests starting with /api/products/ to the product-service
-        - id: category-service-route # You should ideally have a unique ID for each route
+        - id: category-service # You should ideally have a unique ID for each route
           uri: lb://PRODUCT-SERVICE # Assuming categories are also handled by PRODUCT-SERVICE
           predicates:
               - Path=/api/categories/** # This route handles ONLY paths starting with /api/categories/
@@ -54,6 +54,8 @@ spring:
 
     resilience4j:
       circuitbreaker:
+        resilience4j:
+          enabled: true
         configs:
           default:
             failureRateThreshold: 50 # Percentage of failed calls to trip the circuit
@@ -76,5 +78,7 @@ management:
       exposure:
         include: "*" # Expose all actuator endpoints
   endpoint:
+    gateway:
+      enabled: true
     health:
       show-details: always
