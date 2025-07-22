@@ -1,27 +1,5 @@
 spring:
   application:
     name: eureka-server
-
-server:
-  port: 8761 # Default Eureka server port
-
-eureka:
-  client:
-    register-with-eureka: false # Eureka server itself doesn't register with itself
-    fetch-registry: false       # Eureka server doesn't fetch the registry from other Eureka servers
-  server:
-    # Enable self-preservation mode to true in production. Disabling it
-    # in development can prevent issues when services restart frequently.
-    # However, understand its purpose: it prevents Eureka from
-    # incorrectly de-registering services during network partitions.
-    enable-self-preservation: false
-    #wait-time-in-ms-for-sync-millis: 5000 # Time to wait for other Eureka servers to come up (if clustered) commented as it's not required for single discovery server.
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*" # Expose all actuator endpoints for monitoring
-  endpoint:
-    health:
-      show-details: always # Show details in health endpoint
+  config:
+    import: optional:configserver:http://localhost:8888

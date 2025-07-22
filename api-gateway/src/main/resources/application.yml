@@ -1,84 +1,16 @@
-server:
-  port: 8080 # Default API Gateway port, commonly used for frontend access
-
 spring:
   application:
     name: api-gateway
-  main:
-    web-application-type: reactive
+  config:
+    import: optional:configserver:http://localhost:8888
 
-  cloud:
-    gateway:
-      # Removed the entire 'discovery.locator' block.
-      # When you use 'lb://SERVICE-NAME' in your routes,
-      # Spring Cloud Gateway automatically uses Eureka (if configured)
-      # for client-side load balancing and service discovery.
-      # The explicit 'discovery.locator' properties are mostly for
-      # enabling *automatic* route creation, which we're not using
-      # because we're defining each route manually.
 
-      routes:
-        # Example Route: Auth Service
-        - id: auth-service
-          uri: lb://AUTH-SERVICE # 'lb://' is for client-side load balancing with Eureka
-          predicates:
-            - Path=/api/auth/** # Any request starting with /api/auth will be routed
-          filters:
-            - RewritePath=/api/(?<segment>.*), /${segment} # Rewrites /api/auth/login to /auth/login for the target service
-            - name: CircuitBreaker # Apply Circuit Breaker for this route
-              args:
-                name: auth-service
-                fallbackUri: forward:/api/fallback/auth
-        # Example Route: User Service (we'll create this service later)
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/api/users/**
-          filters:
-            - RewritePath=/api/(?<segment>.*), /${segment}
-            - name: CircuitBreaker
-              args:
-                name: user-service
-                fallbackUri: forward:/api/fallback/user
-        # You'll add routes for Product, Cart, Order, Payment services here as you create them
-        - id: product-service #new route for product-service
-          uri: lb://PRODUCT-SERVICE
-          predicates:
-            - Path=/api/products/** # Routes requests starting with /api/products/ to the product-service
-        - id: category-service # You should ideally have a unique ID for each route
-          uri: lb://PRODUCT-SERVICE # Assuming categories are also handled by PRODUCT-SERVICE
-          predicates:
-              - Path=/api/categories/** # This route handles ONLY paths starting with /api/categories/
-
-    # Resilience4j Configuration
-
-    resilience4j:
-      circuitbreaker:
-        resilience4j:
-          enabled: true
-        configs:
-          default:
-            failureRateThreshold: 50 # Percentage of failed calls to trip the circuit
-            waitDurationInOpenState: 10s # Time circuit remains open
-            permittedNumberOfCallsInHalfOpenState: 5 # Number of calls allowed in half-open state
-            slidingWindowType: COUNT_BASED
-            slidingWindowSize: 10 # Number of calls in the sliding window
-
-# Eureka Client Configuration
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka # Point to your running Eureka server
-    enabled: true # Ensure the API Gateway registers with Eureka
-
-# Actuator Configuration
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*" # Expose all actuator endpoints
-  endpoint:
-    gateway:
-      enabled: true
-    health:
-      show-details: always
+      defaultZone: http://localhost:8761/eureka
+    enabled: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
